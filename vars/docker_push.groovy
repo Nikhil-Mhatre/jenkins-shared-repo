@@ -1,14 +1,15 @@
-def call(String Project, String ImageTag, String dockerhubuser, String dockerCredId){
+def call(String PROJECT, String IMAGE_TAG, String DOCKET_CRED_ID){
   echo "****************** Pushing Code To DockerHub ******************"
   withCredentials(
-    [usernamePassword(
-      credentialsId: "${dockerCredId}",
-      passwordVariable: 'dockerhubpass',
-      usernameVariable: 'dockerhubuser')
-    ] 
+      [usernamePassword(
+          credentialsId:"dockerHubCred",
+          passwordVariable:"dockerHubPass",
+          usernameVariable:"dockerHubUser")
+      ]
   ){
-      sh "docker login -u ${dockerhubuser} -p ${dockerhubpass}"
+      sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+      sh "docker tag ${PROJECT}:${IMAGE_TAG} ${env.dockerHubUser}/${PROJECT}:${IMAGE_TAG}"
+      sh "docker push ${env.dockerHubUser}/${PROJECT}:${IMAGE_TAG}"
   }
-  sh "docker push ${dockerhubuser}/${Project}:${ImageTag}"
   echo "****************** Successfully Pushed Code to DockerHub ******************"
 }
