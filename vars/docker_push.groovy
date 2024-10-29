@@ -2,7 +2,7 @@ def call(String PROJECT, String IMAGE_TAG, String DOCKET_CRED_ID){
   echo "****************** Pushing Code To DockerHub ******************"
   withCredentials(
       [usernamePassword(
-          credentialsId:"dockerHubCred",
+          credentialsId:"${DOCKET_CRED_ID}",
           passwordVariable:"dockerHubPass",
           usernameVariable:"dockerHubUser")
       ]
