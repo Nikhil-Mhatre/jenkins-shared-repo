@@ -1,5 +1,13 @@
-def call(String PROJECT_NAME, String IMAGE_TAG, String DOCKER_HUB_USER){
+def call(String PROJECT_NAME, String IMAGE_TAG, String DOCKET_CRED_ID){
   echo "****************** Building the code ******************"
-  sh "docker build -t ${DOCKER_HUB_USER}/${PROJECT_NAME}:${IMAGE_TAG} ."
+  withCredentials(
+        [usernamePassword(
+            credentialsId:"${DOCKET_CRED_ID}",
+            passwordVariable:"dockerHubPass",
+            usernameVariable:"dockerHubUser")
+        ]
+    ){
+     sh "docker build -t ${env.dockerHubUser}/${PROJECT_NAME}:${IMAGE_TAG} ."
+    }
   echo "****************** Code Building Successfull ******************"
 }
